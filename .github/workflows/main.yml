@@ -1,34 +1,18 @@
-name: Run Ollama on macOS
-
+name: Ollama
 on:
-  push:
-    branches:
-      - main
-
+  workflow_dispatch:
 jobs:
-  run-ollama:
-    runs-on: macos-latest
-
+  summarize:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Install ollama
+      run: curl -fsSL https://ollama.com/install.sh | sh
+    - name: Run ollama
+      run: |
+        ollama serve &
+        ollama pull llama3.2-vision:latest
+    - name: Call ollama API
+      run: |
+        curl -d '{"model": "phi3:mini", "stream": false, "prompt":"Whatever I say, asnwer with Yes"}' http://localhost:11434/api/generate
 
-      - name: Set up Homebrew
-        run: |
-          if ! command -v brew; then
-            echo "Installing Homebrew..."
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          else
-            echo "Homebrew already installed"
-          fi
-
-      - name: Install Ollama
-        run: |
-          echo "Installing Ollama..."
-          brew install ollama
-
-      - name: Run Ollama model
-        run: |
-          # Example command to generate text using the "llama2" model
-          echo "Running Ollama..."
-          ollama run llama2 "请解释这段文字的意思：'中国的历史悠久，文化丰富。'"
+      
