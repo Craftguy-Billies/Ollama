@@ -13,6 +13,10 @@ jobs:
         ollama pull llama3.2-vision:latest
     - name: Call ollama API
       run: |
-        curl -d '{"model": "phi3:mini", "stream": false, "prompt":"Whatever I say, asnwer with Yes"}' http://localhost:11434/api/generate
+        curl -d '{"model": "llama3.2-vision:latest", "stream": false, "prompt":"Whatever I say, asnwer with Yes"}' http://localhost:11434/api/generate
+
+    - name: Call ollama
+      run: |    
+        python ollama.py
 
       
