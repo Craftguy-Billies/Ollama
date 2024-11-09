@@ -29,6 +29,6 @@ jobs:
         ollama pull llama3.2-vision:latest
 
     - name: Run Python script
-      run: python ollama.py
+      run: python ollamapy.py
 
     
